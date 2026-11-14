@@ -1,0 +1,270 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conda 零基础入门</title>
+  <style>
+    :root {
+      --bg: #f6f3ee;
+      --paper: #fffdf8;
+      --ink: #1f1d1a;
+      --muted: #5a5249;
+      --brand: #1f8f5f;
+      --brand-dark: #166a47;
+      --accent: #d9a441;
+      --line: #e7ddcf;
+      --code-bg: #1e1f24;
+      --code-ink: #ecf1ff;
+      --radius: 18px;
+      --shadow: 0 12px 32px rgba(31, 29, 26, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 0%, #fff6dc 0%, transparent 40%),
+        radial-gradient(circle at 100% 20%, #d7f1e2 0%, transparent 35%),
+        var(--bg);
+      line-height: 1.65;
+    }
+
+    .wrap {
+      width: min(980px, 92vw);
+      margin: 36px auto 56px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #ffffff 0%, #fef7ea 60%, #e8f6ee 100%);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 34px 28px;
+      box-shadow: var(--shadow);
+      animation: rise 0.7s ease both;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      line-height: 1.2;
+      letter-spacing: 0.4px;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .card {
+      grid-column: span 12;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      animation: rise 0.7s ease both;
+    }
+
+    .card:nth-child(2) { animation-delay: 0.06s; }
+    .card:nth-child(3) { animation-delay: 0.12s; }
+    .card:nth-child(4) { animation-delay: 0.18s; }
+    .card:nth-child(5) { animation-delay: 0.24s; }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 1.22rem;
+      color: var(--brand-dark);
+    }
+
+    .pill {
+      display: inline-block;
+      font-size: 0.86rem;
+      background: #e6f4ee;
+      color: #16593d;
+      border: 1px solid #cde7da;
+      border-radius: 999px;
+      padding: 4px 10px;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    li { margin: 6px 0; }
+
+    .two {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    pre {
+      margin: 10px 0 0;
+      padding: 14px;
+      border-radius: 12px;
+      background: var(--code-bg);
+      color: var(--code-ink);
+      overflow-x: auto;
+      font-size: 0.93rem;
+      border: 1px solid #2b2f38;
+    }
+
+    .warn {
+      border-left: 4px solid var(--accent);
+      background: #fff8eb;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-top: 12px;
+    }
+
+    .steps {
+      counter-reset: n;
+      list-style: none;
+      margin: 8px 0 0;
+      padding: 0;
+    }
+
+    .steps li {
+      counter-increment: n;
+      margin: 10px 0;
+      padding: 10px 12px;
+      border: 1px dashed #d8ccb9;
+      border-radius: 12px;
+      background: #fffdf9;
+    }
+
+    .steps li::before {
+      content: "步骤 " counter(n) "：";
+      color: var(--brand-dark);
+      font-weight: 700;
+    }
+
+    .footer {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (min-width: 860px) {
+      .col-6 { grid-column: span 6; }
+      .col-8 { grid-column: span 8; }
+      .col-4 { grid-column: span 4; }
+      .two { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Conda 是什么？给零基础的 10 分钟上手课</h1>
+      <p class="subtitle">一句话：<strong>Conda 是“Python 环境管理 + 包管理”工具</strong>，帮你把不同项目的依赖隔离开，避免互相打架。</p>
+    </section>
+
+    <section class="grid">
+      <article class="card col-6">
+        <span class="pill">先理解概念</span>
+        <h2>为什么你需要 Conda</h2>
+        <ul>
+          <li>不同项目可能要不同版本的 Python（3.9 / 3.10 / 3.11）。</li>
+          <li>同一个库（如 numpy）版本不同会冲突。</li>
+          <li>Conda 可以给每个项目一个“独立小房间”（环境）。</li>
+          <li>你删掉一个环境，不会影响其他项目。</li>
+        </ul>
+      </article>
+
+      <article class="card col-6">
+        <span class="pill">最推荐</span>
+        <h2>安装哪个：Anaconda 还是 Miniconda</h2>
+        <ul>
+          <li><strong>Miniconda（推荐新手）</strong>：轻量，只装最核心组件。</li>
+          <li>Anaconda：很全，但大，初学阶段经常装一堆用不到的包。</li>
+          <li>首次学习建议先装 Miniconda，后续需要什么再装什么。</li>
+        </ul>
+      </article>
+
+      <article class="card col-8">
+        <span class="pill">实操命令</span>
+        <h2>5 条最常用命令（先会这几个就够了）</h2>
+        <pre><code># 1) 新建环境（例：Python 3.9）
+conda create -n myenv python=3.9 -y
+
+# 2) 进入环境
+conda activate myenv
+
+# 3) 在当前环境安装包
+conda install numpy
+# 或者：pip install 包名
+
+# 4) 看当前环境装了什么
+conda list
+
+# 5) 退出环境
+conda deactivate</code></pre>
+        <div class="warn">重点：看到命令行前缀从 <code>(base)</code> 变成 <code>(myenv)</code>，就说明你已经进入该环境。</div>
+      </article>
+
+      <article class="card col-4">
+        <span class="pill">避坑</span>
+        <h2>新手最容易踩的坑</h2>
+        <ul>
+          <li>忘记先 <code>conda activate 环境名</code> 就安装包。</li>
+          <li>在 <code>base</code> 环境里乱装所有项目依赖。</li>
+          <li>同一环境里混装冲突版本，导致运行报错。</li>
+          <li>没确认版本匹配（你刚才 MindSpore 就是这个问题）。</li>
+        </ul>
+      </article>
+
+      <article class="card col-12">
+        <span class="pill">跟你场景相关</span>
+        <h2>你这次为什么建议先 `conda create`</h2>
+        <div class="two">
+          <div>
+            <ol class="steps">
+              <li>你的 <code>base</code> 里已经有旧的 MindSpore 相关包。</li>
+              <li>直接在 <code>base</code> 里改，容易残留旧依赖。</li>
+              <li>新建环境可以“从干净状态”安装匹配版本。</li>
+              <li>如果失败，删环境重来即可，不影响别的项目。</li>
+            </ol>
+          </div>
+          <div>
+            <pre><code># 建议流程（示例）
+conda create -n ms271_py39 python=3.9 -y
+conda activate ms271_py39
+source /usr/local/Ascend/ascend-toolkit/set_env.sh
+pip install mindspore==2.7.1
+python -c "import mindspore; mindspore.set_context(device_target='Ascend'); mindspore.run_check()"</code></pre>
+          </div>
+        </div>
+      </article>
+
+      <article class="card col-12">
+        <span class="pill">记忆口诀</span>
+        <h2>一句话记住 Conda</h2>
+        <p><strong>“一个项目一个环境，先激活再安装。”</strong></p>
+      </article>
+    </section>
+
+    <p class="footer">文件名：conda-beginner-guide.html</p>
+  </main>
+</body>
+</html>

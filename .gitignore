@@ -1,0 +1,37 @@
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local editor and agent settings
+.idea/
+.vscode/
+.codex/
+.agents/
+
+# Dependencies, build output and hosting caches
+node_modules/
+dist/
+build/
+.cache/
+.netlify/
+.vercel/
+coverage/
+
+# Local environment files and private keys
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
